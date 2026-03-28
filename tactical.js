@@ -6,6 +6,10 @@ const limeStreetStation = {
 const tacticalMapElement = document.querySelector("#tactical-map");
 const tacticalOverlay = document.querySelector("#tactical-map-overlay");
 const tacticalStatus = document.querySelector("#tactical-map-status");
+const rotateLeftButton = document.querySelector("#rotate-left");
+const rotateRightButton = document.querySelector("#rotate-right");
+const pitchOutButton = document.querySelector("#pitch-out");
+const pitchInButton = document.querySelector("#pitch-in");
 const tacticalCamera = {
   bearing: 18,
   pitch: 48,
@@ -14,6 +18,8 @@ const tacticalCamera = {
 const TACTICAL_ZOOM = 17.6;
 const MIN_PITCH = 0;
 const MAX_PITCH = 72;
+const ROTATION_STEP = 18;
+const PITCH_STEP = 10;
 
 const tacticalStyle = {
   version: 8,
@@ -36,13 +42,6 @@ const tacticalStyle = {
   ],
 };
 
-function buildPlayerMarker() {
-  const marker = document.createElement("div");
-  marker.className = "tactical-player-marker";
-  marker.setAttribute("aria-label", "Player position placeholder");
-  return marker;
-}
-
 function setMapStatus(message, isVisible = true) {
   if (tacticalStatus) {
     tacticalStatus.textContent = message;
@@ -54,7 +53,7 @@ function setMapStatus(message, isVisible = true) {
 }
 
 function getCameraOffset() {
-  return [0, Math.round(window.innerHeight * 0.28)];
+  return [0, Math.round(window.innerHeight * 0.22)];
 }
 
 function applyCamera(map) {
@@ -68,64 +67,134 @@ function applyCamera(map) {
   });
 }
 
-function bindDragRotation(map, surface) {
-  const rotationState = {
-    pointerId: null,
-    clientX: 0,
-    clientY: 0,
-    bearing: 0,
-    pitch: 0,
+function clampPitch(value) {
+  return Math.max(MIN_PITCH, Math.min(MAX_PITCH, value));
+}
+
+function getDistance(firstPointer, secondPointer) {
+  const deltaX = secondPointer.clientX - firstPointer.clientX;
+  const deltaY = secondPointer.clientY - firstPointer.clientY;
+  return Math.hypot(deltaX, deltaY);
+}
+
+function bindSurfaceGestures(map, surface) {
+  const activePointers = new Map();
+  const gestureState = {
+    rotationPointerId: null,
+    startX: 0,
+    startBearing: 0,
+    pinchStartDistance: 0,
+    pinchStartPitch: 0,
   };
 
   const endRotation = () => {
-    rotationState.pointerId = null;
+    gestureState.rotationPointerId = null;
     surface.classList.remove("is-rotating");
   };
 
   surface.addEventListener("pointerdown", (event) => {
-    if (!event.isPrimary) {
-      return;
+    activePointers.set(event.pointerId, {
+      clientX: event.clientX,
+      clientY: event.clientY,
+    });
+
+    surface.setPointerCapture(event.pointerId);
+
+    if (activePointers.size === 1) {
+      gestureState.rotationPointerId = event.pointerId;
+      gestureState.startX = event.clientX;
+      gestureState.startBearing = map.getBearing();
+      surface.classList.add("is-rotating");
+    } else if (activePointers.size === 2) {
+      const [firstPointer, secondPointer] = [...activePointers.values()];
+      gestureState.pinchStartDistance = getDistance(firstPointer, secondPointer);
+      gestureState.pinchStartPitch = map.getPitch();
+      endRotation();
     }
 
-    rotationState.pointerId = event.pointerId;
-    rotationState.clientX = event.clientX;
-    rotationState.clientY = event.clientY;
-    rotationState.bearing = map.getBearing();
-    rotationState.pitch = map.getPitch();
-    surface.classList.add("is-rotating");
-    surface.setPointerCapture(event.pointerId);
     event.preventDefault();
   });
 
   surface.addEventListener("pointermove", (event) => {
-    if (rotationState.pointerId !== event.pointerId) {
+    if (!activePointers.has(event.pointerId)) {
       return;
     }
 
-    const deltaX = event.clientX - rotationState.clientX;
-    const deltaY = event.clientY - rotationState.clientY;
+    activePointers.set(event.pointerId, {
+      clientX: event.clientX,
+      clientY: event.clientY,
+    });
 
-    tacticalCamera.bearing = rotationState.bearing + deltaX * 0.35;
-    tacticalCamera.pitch = Math.max(
-      MIN_PITCH,
-      Math.min(MAX_PITCH, rotationState.pitch - deltaY * 0.18),
-    );
+    if (activePointers.size >= 2) {
+      const [firstPointer, secondPointer] = [...activePointers.values()];
+      const distance = getDistance(firstPointer, secondPointer);
+      const pinchDelta = distance - gestureState.pinchStartDistance;
 
+      tacticalCamera.pitch = clampPitch(gestureState.pinchStartPitch + pinchDelta * 0.18);
+      applyCamera(map);
+      event.preventDefault();
+      return;
+    }
+
+    if (gestureState.rotationPointerId !== event.pointerId) {
+      return;
+    }
+
+    const deltaX = event.clientX - gestureState.startX;
+    tacticalCamera.bearing = gestureState.startBearing + deltaX * 0.35;
     applyCamera(map);
     event.preventDefault();
   });
 
-  surface.addEventListener("pointerup", (event) => {
-    if (rotationState.pointerId !== event.pointerId) {
+  const releasePointer = (event) => {
+    if (!activePointers.has(event.pointerId)) {
       return;
     }
 
-    surface.releasePointerCapture(event.pointerId);
-    endRotation();
+    activePointers.delete(event.pointerId);
+
+    if (surface.hasPointerCapture(event.pointerId)) {
+      surface.releasePointerCapture(event.pointerId);
+    }
+
+    if (gestureState.rotationPointerId === event.pointerId || activePointers.size === 0) {
+      endRotation();
+    }
+
+    if (activePointers.size === 1) {
+      const [[pointerId, pointer]] = [...activePointers.entries()];
+      gestureState.rotationPointerId = pointerId;
+      gestureState.startX = pointer.clientX;
+      gestureState.startBearing = map.getBearing();
+      surface.classList.add("is-rotating");
+    }
+  };
+
+  surface.addEventListener("pointerup", releasePointer);
+  surface.addEventListener("pointercancel", releasePointer);
+  surface.addEventListener("lostpointercapture", releasePointer);
+}
+
+function bindControlButtons(map) {
+  rotateLeftButton?.addEventListener("click", () => {
+    tacticalCamera.bearing -= ROTATION_STEP;
+    applyCamera(map);
   });
 
-  surface.addEventListener("pointercancel", endRotation);
-  surface.addEventListener("lostpointercapture", endRotation);
+  rotateRightButton?.addEventListener("click", () => {
+    tacticalCamera.bearing += ROTATION_STEP;
+    applyCamera(map);
+  });
+
+  pitchOutButton?.addEventListener("click", () => {
+    tacticalCamera.pitch = clampPitch(tacticalCamera.pitch - PITCH_STEP);
+    applyCamera(map);
+  });
+
+  pitchInButton?.addEventListener("click", () => {
+    tacticalCamera.pitch = clampPitch(tacticalCamera.pitch + PITCH_STEP);
+    applyCamera(map);
+  });
 }
 
 function bootTacticalMap() {
@@ -175,13 +244,6 @@ function bootTacticalMap() {
     setMapStatus("Loading tactical map...", false);
     applyCamera(map);
 
-    new window.maplibregl.Marker({
-      element: buildPlayerMarker(),
-      anchor: "center",
-    })
-      .setLngLat([limeStreetStation.lng, limeStreetStation.lat])
-      .addTo(map);
-
     map.addSource("station-radius", {
       type: "geojson",
       data: {
@@ -208,7 +270,8 @@ function bootTacticalMap() {
   });
 
   window.addEventListener("resize", () => applyCamera(map));
-  bindDragRotation(map, tacticalMapElement);
+  bindSurfaceGestures(map, tacticalMapElement);
+  bindControlButtons(map);
 }
 
 window.addEventListener("load", bootTacticalMap);
