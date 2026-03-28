@@ -4,7 +4,8 @@ const limeStreetStation = {
 };
 
 const tacticalMapElement = document.querySelector("#tactical-map");
-const tacticalPage = document.querySelector(".tactical-page");
+const tacticalOverlay = document.querySelector("#tactical-map-overlay");
+const tacticalStatus = document.querySelector("#tactical-map-status");
 
 const tacticalStyle = {
   version: 8,
@@ -32,6 +33,16 @@ function buildPlayerMarker() {
   marker.className = "tactical-player-marker";
   marker.setAttribute("aria-label", "Player position placeholder");
   return marker;
+}
+
+function setMapStatus(message, isVisible = true) {
+  if (tacticalStatus) {
+    tacticalStatus.textContent = message;
+  }
+
+  if (tacticalOverlay) {
+    tacticalOverlay.hidden = !isVisible;
+  }
 }
 
 function bindDragRotation(map, surface) {
@@ -90,13 +101,15 @@ function bootTacticalMap() {
     return;
   }
 
+  setMapStatus("Loading tactical map...", true);
+
   const map = new window.maplibregl.Map({
     container: tacticalMapElement,
     style: tacticalStyle,
     center: [limeStreetStation.lng, limeStreetStation.lat],
-    zoom: 16.7,
-    minZoom: 16.7,
-    maxZoom: 16.7,
+    zoom: 17.6,
+    minZoom: 17.6,
+    maxZoom: 17.6,
     bearing: 18,
     pitch: 48,
     attributionControl: false,
@@ -121,7 +134,14 @@ function bootTacticalMap() {
     "bottom-right",
   );
 
+  map.on("error", () => {
+    setMapStatus("Map failed to load. Check the CDN and tile network requests.", true);
+  });
+
   map.on("load", () => {
+    tacticalMapElement.classList.add("tactical-map-ready");
+    setMapStatus("Loading tactical map...", false);
+
     new window.maplibregl.Marker({
       element: buildPlayerMarker(),
       anchor: "center",
@@ -151,11 +171,7 @@ function bootTacticalMap() {
         "circle-stroke-width": 2,
       },
     });
-
-    map.once("idle", () => {
-      tacticalPage?.classList.add("tactical-map-ready");
-      map.resize();
-    });
+    map.resize();
   });
 
   bindDragRotation(map, tacticalMapElement);

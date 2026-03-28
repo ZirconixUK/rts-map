@@ -16,16 +16,15 @@
   </head>
   <body class="tactical-page">
     <div class="tactical-map-shell" aria-label="Tactical map centered on Lime Street Station">
-      <iframe
-        class="tactical-map-fallback-frame"
-        title="Tactical map fallback"
-        src="https://www.openstreetmap.org/export/embed.html?bbox=-2.981%2C53.4048%2C-2.9737%2C53.4108&amp;layer=mapnik&amp;marker=53.407822%2C-2.977385"
-      ></iframe>
       <div
         id="tactical-map"
         class="tactical-map-fullscreen"
         aria-label="Interactive tactical map centered on Lime Street Station"
-      ></div>
+      >
+        <div class="tactical-map-overlay" id="tactical-map-overlay">
+          <p id="tactical-map-status">Loading tactical map...</p>
+        </div>
+      </div>
     </div>
 
     <script src="https://unpkg.com/maplibre-gl@5.4.0/dist/maplibre-gl.js"></script>
