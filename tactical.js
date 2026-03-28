@@ -6,6 +6,14 @@ const limeStreetStation = {
 const tacticalMapElement = document.querySelector("#tactical-map");
 const tacticalOverlay = document.querySelector("#tactical-map-overlay");
 const tacticalStatus = document.querySelector("#tactical-map-status");
+const tacticalCamera = {
+  bearing: 18,
+  pitch: 48,
+};
+
+const TACTICAL_ZOOM = 17.6;
+const MIN_PITCH = 0;
+const MAX_PITCH = 72;
 
 const tacticalStyle = {
   version: 8,
@@ -45,11 +53,28 @@ function setMapStatus(message, isVisible = true) {
   }
 }
 
+function getCameraOffset() {
+  return [0, Math.round(window.innerHeight * 0.28)];
+}
+
+function applyCamera(map) {
+  map.easeTo({
+    center: [limeStreetStation.lng, limeStreetStation.lat],
+    zoom: TACTICAL_ZOOM,
+    bearing: tacticalCamera.bearing,
+    pitch: tacticalCamera.pitch,
+    offset: getCameraOffset(),
+    duration: 0,
+  });
+}
+
 function bindDragRotation(map, surface) {
   const rotationState = {
     pointerId: null,
     clientX: 0,
+    clientY: 0,
     bearing: 0,
+    pitch: 0,
   };
 
   const endRotation = () => {
@@ -64,7 +89,9 @@ function bindDragRotation(map, surface) {
 
     rotationState.pointerId = event.pointerId;
     rotationState.clientX = event.clientX;
+    rotationState.clientY = event.clientY;
     rotationState.bearing = map.getBearing();
+    rotationState.pitch = map.getPitch();
     surface.classList.add("is-rotating");
     surface.setPointerCapture(event.pointerId);
     event.preventDefault();
@@ -76,10 +103,15 @@ function bindDragRotation(map, surface) {
     }
 
     const deltaX = event.clientX - rotationState.clientX;
-    map.jumpTo({
-      center: [limeStreetStation.lng, limeStreetStation.lat],
-      bearing: rotationState.bearing + deltaX * 0.35,
-    });
+    const deltaY = event.clientY - rotationState.clientY;
+
+    tacticalCamera.bearing = rotationState.bearing + deltaX * 0.35;
+    tacticalCamera.pitch = Math.max(
+      MIN_PITCH,
+      Math.min(MAX_PITCH, rotationState.pitch - deltaY * 0.18),
+    );
+
+    applyCamera(map);
     event.preventDefault();
   });
 
@@ -107,11 +139,11 @@ function bootTacticalMap() {
     container: tacticalMapElement,
     style: tacticalStyle,
     center: [limeStreetStation.lng, limeStreetStation.lat],
-    zoom: 17.6,
-    minZoom: 17.6,
-    maxZoom: 17.6,
-    bearing: 18,
-    pitch: 48,
+    zoom: TACTICAL_ZOOM,
+    minZoom: TACTICAL_ZOOM,
+    maxZoom: TACTICAL_ZOOM,
+    bearing: tacticalCamera.bearing,
+    pitch: tacticalCamera.pitch,
     attributionControl: false,
     dragPan: false,
     dragRotate: true,
@@ -141,6 +173,7 @@ function bootTacticalMap() {
   map.on("load", () => {
     tacticalMapElement.classList.add("tactical-map-ready");
     setMapStatus("Loading tactical map...", false);
+    applyCamera(map);
 
     new window.maplibregl.Marker({
       element: buildPlayerMarker(),
@@ -174,6 +207,7 @@ function bootTacticalMap() {
     map.resize();
   });
 
+  window.addEventListener("resize", () => applyCamera(map));
   bindDragRotation(map, tacticalMapElement);
 }
 
