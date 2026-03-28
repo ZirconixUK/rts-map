@@ -85,17 +85,17 @@ Exit criteria:
 - prototype feels like a game loop has begun
 - user can explain what they are trying to do in one sentence
 
-## Phase 6 — branch testing workflow
+## Phase 6 — main-based testing workflow
 Goal: make remote testing easy.
 
 Target outcomes:
-- branch workflow is stable
+- `main` workflow is stable
 - GitHub Pages testing works cleanly
 - instructions are clear enough for repeatable phone testing
 
 Exit criteria:
-- experimental branch can be pushed and tested on phone
-- switching between stable and experimental versions is manageable
+- `main` can be pushed and tested on phone
+- the update loop stays simple and repeatable
 
 ## Phase 7 — cleanup pass
 Goal: keep momentum without letting the prototype rot.
@@ -129,6 +129,5 @@ Do not prioritize these unless explicitly requested:
 ## Suggested first implementation prompt for Codex
 Read `AGENTS.md` and follow it strictly.
 Build the smallest possible playable prototype for RTS Map in incremental steps.
-Work on a feature branch, keep changes small, verify after each step, and commit each meaningful step.
-Push the branch when the environment allows it.
-Do not touch `main`.
+Work on `main`, keep changes small, verify after each step, and commit each meaningful step.
+Push `main` when the environment allows it.

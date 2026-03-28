@@ -34,15 +34,14 @@ If a framework would clearly help, explain why before introducing it.
 - Keep filenames and structure straightforward.
 
 ## Git workflow
-- Never work directly on `main` unless explicitly asked.
-- Prefer a feature branch, for example `codex/rts-map-prototype`.
+- Work directly on `main` by default for this repository.
+- Do not create a feature branch unless the user explicitly asks for one.
 - Keep commits small and coherent.
 - After each meaningful implementation step:
   1. verify the app still works
   2. summarize what changed
   3. commit the change
-  4. push the branch if the environment allows it
-- Do not merge into `main` unless explicitly asked.
+  4. push `main` if the environment allows it
 - Do not change GitHub Pages settings unless explicitly asked.
 
 ## Commit message style
@@ -70,7 +69,7 @@ For a static prototype, minimum manual checks are:
 If something cannot be verified locally, say so clearly.
 
 ## GitHub Pages awareness
-This project is often tested by pushing a branch and viewing it through GitHub Pages on a phone.
+This project is often tested by pushing updates to `main` and viewing them through GitHub Pages on a phone.
 
 Because of that:
 - do not assume localhost is enough for final verification

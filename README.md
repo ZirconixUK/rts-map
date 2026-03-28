@@ -22,21 +22,20 @@ A good first playable version might include:
 
 ## Development approach
 - keep changes incremental
-- use feature branches
-- keep `main` stable
-- test experimental work through a separate branch when needed
+- work directly on `main` for normal development in this repo
+- keep commits small and easy to reason about
+- push `main` when the current step is ready to test
 
 ## GitHub Pages workflow
 This repo may be tested on mobile through GitHub Pages.
 
 Typical workflow:
-1. keep `main` as the stable version
-2. do experimental work on a feature branch
-3. push the feature branch
-4. temporarily point GitHub Pages at that branch if needed for mobile testing
-5. switch back when done
+1. make the next small change on `main`
+2. verify it locally as far as possible
+3. push `main`
+4. open the GitHub Pages site on phone and confirm the change there
 
-Note: GitHub Pages only serves one branch/folder source per repository at a time, so branch-based mobile testing should be treated as a temporary preview workflow.
+This repository is separate from other game projects, so using `main` directly is the preferred workflow here.
 
 ## Local run options
 Because this is expected to be a static web prototype, a local run can usually be as simple as serving the repo folder with any lightweight static server.
