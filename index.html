@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RTS Map</title>
+    <meta
+      name="description"
+      content="A lightweight browser prototype for a real-world map strategy game."
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="hero">
+        <p class="eyebrow">Phase 0</p>
+        <h1>RTS Map</h1>
+        <p class="hero-copy">
+          A simple browser prototype for a lightweight real-world strategy game.
+          This first slice establishes the app shell, a map stage placeholder,
+          and a mobile-friendly UI that can be deployed to GitHub Pages.
+        </p>
+      </header>
+
+      <main class="layout">
+        <section class="map-panel" aria-labelledby="map-stage-title">
+          <div class="panel-header">
+            <div>
+              <p class="panel-kicker">Prototype Stage</p>
+              <h2 id="map-stage-title">Map Stage</h2>
+            </div>
+            <span class="status-pill" id="app-status">Booting</span>
+          </div>
+
+          <div class="map-stage" aria-label="Map prototype placeholder">
+            <div class="grid-lines"></div>
+            <div class="range-ring range-ring-large"></div>
+            <div class="range-ring range-ring-small"></div>
+            <div class="player-marker" aria-hidden="true"></div>
+            <div class="poi poi-a" aria-hidden="true"></div>
+            <div class="poi poi-b" aria-hidden="true"></div>
+            <div class="poi poi-c" aria-hidden="true"></div>
+            <p class="map-caption">
+              Interactive map rendering will land in Phase 1. This placeholder
+              keeps the page structure stable for GitHub Pages and mobile
+              testing.
+            </p>
+          </div>
+        </section>
+
+        <aside class="info-panel" aria-labelledby="checklist-title">
+          <div class="card">
+            <p class="panel-kicker">Project Shell</p>
+            <h2 id="checklist-title">Phase 0 Checklist</h2>
+            <ul class="checklist">
+              <li>Static project structure is in place</li>
+              <li>App loads as a single GitHub Pages-friendly page</li>
+              <li>Map container and UI shell exist</li>
+              <li>Layout is usable on a phone-sized screen</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <p class="panel-kicker">Next Steps</p>
+            <h2>Planned Follow-up</h2>
+            <p>
+              The next phase will replace the placeholder stage with a real map
+              and establish a sensible default view for desktop and mobile.
+            </p>
+          </div>
+
+          <div class="card telemetry-card">
+            <p class="panel-kicker">Runtime</p>
+            <h2>Client State</h2>
+            <dl class="telemetry">
+              <div>
+                <dt>Status</dt>
+                <dd id="runtime-status">Loading shell</dd>
+              </div>
+              <div>
+                <dt>Viewport</dt>
+                <dd id="viewport-size">Unknown</dd>
+              </div>
+              <div>
+                <dt>Build</dt>
+                <dd>Static HTML/CSS/JS</dd>
+              </div>
+            </dl>
+          </div>
+        </aside>
+      </main>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
