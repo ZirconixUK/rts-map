@@ -21,6 +21,7 @@ const MIN_PITCH = 0;
 const MAX_PITCH = 72;
 const ROTATION_STEP = 18;
 const PITCH_STEP = 10;
+const TACTICAL_POI_RENDER_LIMIT = 1500;
 
 const tacticalStyle = "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json";
 
@@ -185,7 +186,7 @@ function bindControlButtons(map) {
 }
 
 function bootTacticalMap() {
-  if (!tacticalMapElement || !window.maplibregl) {
+  if (!tacticalMapElement || !window.maplibregl || !window.RtsPoiRuntime) {
     return;
   }
 
@@ -253,9 +254,54 @@ function bootTacticalMap() {
         "circle-stroke-width": 2,
       },
     });
+
+    map.addSource("runtime-pois", {
+      type: "geojson",
+      data: window.RtsPoiRuntime.poisToGeoJson([]),
+    });
+
+    map.addLayer({
+      id: "runtime-pois-dots",
+      type: "circle",
+      source: "runtime-pois",
+      paint: {
+        "circle-radius": 4,
+        "circle-color": ["get", "color"],
+        "circle-opacity": 0.92,
+      },
+    });
+
     map.resize();
   });
 
+  let runtimePois = [];
+
+  async function loadPois() {
+    try {
+      runtimePois = await window.RtsPoiRuntime.loadRuntimePois();
+      refreshVisiblePois();
+    } catch (error) {
+      setMapStatus("POIs failed to load. Check that the JSON file is being served.", true);
+    }
+  }
+
+  function refreshVisiblePois() {
+    const poiSource = map.getSource("runtime-pois");
+
+    if (!poiSource) {
+      return;
+    }
+
+    const visiblePois = window.RtsPoiRuntime
+      .filterPoisInBounds(runtimePois, map.getBounds())
+      .slice(0, TACTICAL_POI_RENDER_LIMIT);
+
+    poiSource.setData(window.RtsPoiRuntime.poisToGeoJson(visiblePois));
+  }
+
+  map.on("load", loadPois);
+  map.on("moveend", refreshVisiblePois);
+  map.on("zoomend", refreshVisiblePois);
   window.addEventListener("resize", () => applyCamera(map));
   bindSurfaceGestures(map, tacticalMapElement);
   bindControlButtons(map);
