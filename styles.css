@@ -417,6 +417,7 @@ body {
   gap: 0.6rem;
   width: min(16rem, calc(100vw - 1.5rem));
   transform: translateX(-50%);
+  pointer-events: auto;
 }
 
 .tactical-control-button {

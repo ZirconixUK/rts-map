@@ -12,7 +12,7 @@
       rel="stylesheet"
       href="https://unpkg.com/maplibre-gl@5.4.0/dist/maplibre-gl.css"
     />
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="styles.css?v=20260328b" />
   </head>
   <body class="tactical-page">
     <div class="tactical-map-shell" aria-label="Tactical map centered on Lime Street Station">
@@ -24,27 +24,27 @@
         <div class="tactical-map-overlay" id="tactical-map-overlay">
           <p id="tactical-map-status">Loading tactical map...</p>
         </div>
+      </div>
 
-        <div class="tactical-player-reticle" aria-hidden="true"></div>
+      <div class="tactical-player-reticle" aria-hidden="true"></div>
 
-        <div class="tactical-controls" aria-label="Tactical camera controls">
-          <button class="tactical-control-button" id="rotate-left" type="button">
-            Turn left
-          </button>
-          <button class="tactical-control-button" id="rotate-right" type="button">
-            Turn right
-          </button>
-          <button class="tactical-control-button" id="pitch-out" type="button">
-            Top down
-          </button>
-          <button class="tactical-control-button" id="pitch-in" type="button">
-            Tilt in
-          </button>
-        </div>
+      <div class="tactical-controls" aria-label="Tactical camera controls">
+        <button class="tactical-control-button" id="rotate-left" type="button">
+          Turn left
+        </button>
+        <button class="tactical-control-button" id="rotate-right" type="button">
+          Turn right
+        </button>
+        <button class="tactical-control-button" id="pitch-out" type="button">
+          Top down
+        </button>
+        <button class="tactical-control-button" id="pitch-in" type="button">
+          Tilt in
+        </button>
       </div>
     </div>
 
     <script src="https://unpkg.com/maplibre-gl@5.4.0/dist/maplibre-gl.js"></script>
-    <script src="tactical.js"></script>
+    <script src="tactical.js?v=20260328b"></script>
   </body>
 </html>
