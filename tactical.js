@@ -22,26 +22,7 @@ const MAX_PITCH = 72;
 const ROTATION_STEP = 18;
 const PITCH_STEP = 10;
 
-const tacticalStyle = {
-  version: 8,
-  sources: {
-    osm: {
-      type: "raster",
-      tiles: ["https://tile.openstreetmap.org/{z}/{x}/{y}.png"],
-      tileSize: 256,
-      attribution:
-        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-      maxzoom: 19,
-    },
-  },
-  layers: [
-    {
-      id: "osm",
-      type: "raster",
-      source: "osm",
-    },
-  ],
-};
+const tacticalStyle = "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json";
 
 function setMapStatus(message, isVisible = true) {
   if (tacticalStatus) {
