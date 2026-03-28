@@ -27,58 +27,9 @@
       <div id="strategy-map" class="strategy-map-full" aria-label="Strategy map"></div>
     </div>
 
-    <header class="strategy-overlay strategy-overlay-top">
-      <div class="strategy-title">
-        <p class="eyebrow">Strategy Mode</p>
-        <h1>Strategy Map</h1>
-        <p class="strategy-copy">
-          Centered on Lime Street Station in Liverpool.
-        </p>
-      </div>
-
-      <div class="map-actions">
-        <a class="text-link overlay-link" href="index.html">Back to home</a>
-        <button class="action-button" id="recenter-button" type="button">
-          Recenter
-        </button>
-      </div>
-    </header>
-
-    <aside class="strategy-overlay strategy-overlay-bottom">
-      <div class="strategy-info-grid">
-        <section class="overlay-card">
-          <p class="panel-kicker">Map Focus</p>
-          <h2>Lime Street Station</h2>
-          <p>
-            The first anchor point for the strategy layer and the current test
-            location for movement, POIs, and interaction radius.
-          </p>
-        </section>
-
-        <section class="overlay-card">
-          <p class="panel-kicker">Runtime</p>
-          <h2>Telemetry</h2>
-          <dl class="telemetry">
-            <div>
-              <dt>Center</dt>
-              <dd id="map-center-readout">Loading</dd>
-            </div>
-            <div>
-              <dt>Zoom</dt>
-              <dd id="map-zoom-readout">Loading</dd>
-            </div>
-            <div>
-              <dt>Mode</dt>
-              <dd>Strategy</dd>
-            </div>
-            <div>
-              <dt>Engine</dt>
-              <dd id="map-engine-readout">Fallback</dd>
-            </div>
-          </dl>
-        </section>
-      </div>
-    </aside>
+    <button class="map-fab" id="recenter-button" type="button" aria-label="Recenter map">
+      Recenter
+    </button>
 
     <script
       src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"

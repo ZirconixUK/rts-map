@@ -4,27 +4,15 @@ const limeStreetStation = {
   name: "Lime Street Station",
 };
 
-const mapCenterReadout = document.querySelector("#map-center-readout");
-const mapZoomReadout = document.querySelector("#map-zoom-readout");
-const mapEngineReadout = document.querySelector("#map-engine-readout");
 const recenterButton = document.querySelector("#recenter-button");
 let strategyMap = null;
 
 function setFallbackReadout() {
-  mapCenterReadout.textContent = `${limeStreetStation.lat.toFixed(5)}, ${limeStreetStation.lng.toFixed(5)}`;
-  mapZoomReadout.textContent = "Embedded";
-  mapEngineReadout.textContent = "OSM embed";
+  return;
 }
 
 function updateLeafletReadout() {
-  if (!strategyMap) {
-    return;
-  }
-
-  const center = strategyMap.getCenter();
-  mapCenterReadout.textContent = `${center.lat.toFixed(5)}, ${center.lng.toFixed(5)}`;
-  mapZoomReadout.textContent = `${strategyMap.getZoom()}`;
-  mapEngineReadout.textContent = "Leaflet";
+  return;
 }
 
 function initLeafletMap() {
