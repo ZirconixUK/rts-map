@@ -15,7 +15,8 @@ const tacticalCamera = {
   pitch: 48,
 };
 
-const TACTICAL_ZOOM = 17.6;
+const MIN_CAMERA_ZOOM = 17.15;
+const MAX_CAMERA_ZOOM = 17.85;
 const MIN_PITCH = 0;
 const MAX_PITCH = 72;
 const ROTATION_STEP = 18;
@@ -56,10 +57,15 @@ function getCameraOffset() {
   return [0, Math.round(window.innerHeight * 0.22)];
 }
 
+function getCameraZoom() {
+  const pitchProgress = (tacticalCamera.pitch - MIN_PITCH) / (MAX_PITCH - MIN_PITCH);
+  return MIN_CAMERA_ZOOM + (MAX_CAMERA_ZOOM - MIN_CAMERA_ZOOM) * pitchProgress;
+}
+
 function applyCamera(map) {
   map.easeTo({
     center: [limeStreetStation.lng, limeStreetStation.lat],
-    zoom: TACTICAL_ZOOM,
+    zoom: getCameraZoom(),
     bearing: tacticalCamera.bearing,
     pitch: tacticalCamera.pitch,
     offset: getCameraOffset(),
@@ -208,9 +214,9 @@ function bootTacticalMap() {
     container: tacticalMapElement,
     style: tacticalStyle,
     center: [limeStreetStation.lng, limeStreetStation.lat],
-    zoom: TACTICAL_ZOOM,
-    minZoom: TACTICAL_ZOOM,
-    maxZoom: TACTICAL_ZOOM,
+    zoom: getCameraZoom(),
+    minZoom: MIN_CAMERA_ZOOM,
+    maxZoom: MAX_CAMERA_ZOOM,
     bearing: tacticalCamera.bearing,
     pitch: tacticalCamera.pitch,
     attributionControl: false,
