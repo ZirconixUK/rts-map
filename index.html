@@ -17,8 +17,8 @@
         <h1>RTS Map</h1>
         <p class="hero-copy">
           A simple browser prototype for a lightweight real-world strategy game.
-          This first slice establishes the app shell, a map stage placeholder,
-          and a mobile-friendly UI that can be deployed to GitHub Pages.
+          Use this landing page to jump into the strategic world map or the
+          later tactical mode.
         </p>
       </header>
 
@@ -26,37 +26,44 @@
         <section class="map-panel" aria-labelledby="map-stage-title">
           <div class="panel-header">
             <div>
-              <p class="panel-kicker">Prototype Stage</p>
-              <h2 id="map-stage-title">Map Stage</h2>
+              <p class="panel-kicker">Mode Select</p>
+              <h2 id="map-stage-title">Choose A Map View</h2>
             </div>
             <span class="status-pill" id="app-status">Booting</span>
           </div>
 
-          <div class="map-stage" aria-label="Map prototype placeholder">
-            <div class="grid-lines"></div>
-            <div class="range-ring range-ring-large"></div>
-            <div class="range-ring range-ring-small"></div>
-            <div class="player-marker" aria-hidden="true"></div>
-            <div class="poi poi-a" aria-hidden="true"></div>
-            <div class="poi poi-b" aria-hidden="true"></div>
-            <div class="poi poi-c" aria-hidden="true"></div>
-            <p class="map-caption">
-              Interactive map rendering will land in Phase 1. This placeholder
-              keeps the page structure stable for GitHub Pages and mobile
-              testing.
-            </p>
+          <div class="mode-grid" aria-label="Game mode links">
+            <a class="mode-card mode-card-primary" href="strategy.html">
+              <span class="mode-label">Live Next</span>
+              <h3>Strategy Map</h3>
+              <p>
+                Open the interactive Leaflet map centered on Lime Street
+                Station and use it as the prototype world layer.
+              </p>
+              <span class="mode-link">Open strategy map</span>
+            </a>
+
+            <a class="mode-card" href="tactical.html">
+              <span class="mode-label">Placeholder</span>
+              <h3>Tactical Map</h3>
+              <p>
+                Reserved for the lower-level encounter view. The page exists so
+                the route structure is in place before the mode itself is built.
+              </p>
+              <span class="mode-link">Open tactical placeholder</span>
+            </a>
           </div>
         </section>
 
         <aside class="info-panel" aria-labelledby="checklist-title">
           <div class="card">
-            <p class="panel-kicker">Project Shell</p>
-            <h2 id="checklist-title">Phase 0 Checklist</h2>
+            <p class="panel-kicker">Current Scope</p>
+            <h2 id="checklist-title">Prototype Checklist</h2>
             <ul class="checklist">
-              <li>Static project structure is in place</li>
-              <li>App loads as a single GitHub Pages-friendly page</li>
-              <li>Map container and UI shell exist</li>
-              <li>Layout is usable on a phone-sized screen</li>
+              <li>Landing page routes to both prototype modes</li>
+              <li>Strategy map uses a real interactive slippy map</li>
+              <li>Tactical route exists as a stable placeholder</li>
+              <li>All pages stay GitHub Pages-friendly</li>
             </ul>
           </div>
 
@@ -64,8 +71,8 @@
             <p class="panel-kicker">Next Steps</p>
             <h2>Planned Follow-up</h2>
             <p>
-              The next phase will replace the placeholder stage with a real map
-              and establish a sensible default view for desktop and mobile.
+              The strategy page can now grow into the main prototype loop. The
+              tactical page is ready for a later focused interaction layer.
             </p>
           </div>
 

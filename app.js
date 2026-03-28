@@ -8,7 +8,7 @@ function updateViewportSize() {
 
 function bootShell() {
   appStatus.textContent = "Ready";
-  runtimeStatus.textContent = "Phase 0 shell loaded";
+  runtimeStatus.textContent = "Mode hub loaded";
   updateViewportSize();
 }
 
