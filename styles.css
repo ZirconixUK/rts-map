@@ -343,14 +343,24 @@ body {
   background: #dbe6cf;
 }
 
-.tactical-map-fullscreen {
+.tactical-map-shell {
   position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #dbe6cf;
+}
+
+.tactical-map-fullscreen {
+  position: absolute;
   inset: 0;
   width: 100vw;
   height: 100vh;
   background: #dbe6cf;
   cursor: grab;
   touch-action: none;
+  opacity: 0;
+  z-index: 1;
 }
 
 .tactical-map-fullscreen.is-rotating {
@@ -364,21 +374,20 @@ body {
   height: 100%;
 }
 
-.tactical-map-fallback {
+.tactical-map-fallback-frame {
   position: absolute;
   inset: 0;
-  display: grid;
-  place-items: center;
-  padding: 1.5rem;
-  background:
-    radial-gradient(circle at top, rgba(255, 255, 255, 0.45), transparent 42%),
-    linear-gradient(135deg, rgba(228, 237, 215, 0.92), rgba(247, 241, 226, 0.96));
-  color: var(--muted);
-  text-align: center;
-  line-height: 1.55;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: #dbe6cf;
 }
 
-.tactical-map-ready .tactical-map-fallback {
+.tactical-map-ready .tactical-map-fullscreen {
+  opacity: 1;
+}
+
+.tactical-map-ready .tactical-map-fallback-frame {
   opacity: 0;
   pointer-events: none;
 }

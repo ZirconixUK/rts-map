@@ -4,6 +4,7 @@ const limeStreetStation = {
 };
 
 const tacticalMapElement = document.querySelector("#tactical-map");
+const tacticalPage = document.querySelector(".tactical-page");
 
 const tacticalStyle = {
   version: 8,
@@ -121,8 +122,6 @@ function bootTacticalMap() {
   );
 
   map.on("load", () => {
-    tacticalMapElement.classList.add("tactical-map-ready");
-
     new window.maplibregl.Marker({
       element: buildPlayerMarker(),
       anchor: "center",
@@ -151,6 +150,11 @@ function bootTacticalMap() {
         "circle-stroke-color": "rgba(31, 90, 136, 0.58)",
         "circle-stroke-width": 2,
       },
+    });
+
+    map.once("idle", () => {
+      tacticalPage?.classList.add("tactical-map-ready");
+      map.resize();
     });
   });
 
