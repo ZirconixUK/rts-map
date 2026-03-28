@@ -15,93 +15,17 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body class="tactical-page">
-    <div class="page-shell">
-      <header class="hero">
-        <p class="eyebrow">Tactical Mode</p>
-        <h1>Tactical Map</h1>
-        <p class="hero-copy">
-          This closer-range map is locked onto the player placeholder at Lime
-          Street Station. The view stays centered, supports rotation, and is
-          tuned for quick tactical testing on mobile.
+    <div
+      id="tactical-map"
+      class="tactical-map-fullscreen"
+      aria-label="Tactical map centered on Lime Street Station"
+    >
+      <div class="tactical-map-fallback">
+        <p>
+          Loading the tactical map. If the live layer does not appear, check
+          network access to the CDN tile and script sources.
         </p>
-      </header>
-
-      <main class="layout">
-        <section class="map-panel" aria-labelledby="tactical-title">
-          <div class="panel-header">
-            <div>
-              <p class="panel-kicker">Live Prototype</p>
-              <h2 id="tactical-title">Station Radius View</h2>
-            </div>
-            <span class="status-pill">Active</span>
-          </div>
-
-          <div class="tactical-map-shell">
-            <div
-              id="tactical-map"
-              class="tactical-map-stage"
-              aria-label="Tactical map centered on Lime Street Station"
-            >
-              <div class="tactical-map-fallback">
-                <p>
-                  Loading the tactical map. If the live layer does not appear,
-                  check network access to the CDN tile and script sources.
-                </p>
-              </div>
-            </div>
-
-            <div class="tactical-overlay">
-              <div class="tactical-chip-stack" aria-label="Map state">
-                <span class="tactical-chip">Centre locked</span>
-                <span class="tactical-chip">Pan disabled</span>
-                <span class="tactical-chip">Rotate enabled</span>
-              </div>
-
-              <div class="tactical-toolbar" aria-label="Map rotation controls">
-                <button class="action-button" id="rotate-left" type="button">
-                  Rotate left
-                </button>
-                <button class="action-button" id="reset-bearing" type="button">
-                  Face north
-                </button>
-                <button class="action-button" id="rotate-right" type="button">
-                  Rotate right
-                </button>
-              </div>
-
-              <p class="map-caption">
-                Tactical camera centered on Lime Street Station until live
-                player positioning is added. Use the rotation buttons to change
-                the viewing angle without moving the camera.
-              </p>
-            </div>
-          </div>
-
-          <a class="mode-link-inline" href="index.html">Return to home</a>
-        </section>
-
-        <aside class="info-panel">
-          <div class="card">
-            <p class="panel-kicker">Location Seed</p>
-            <h2>Current Anchor</h2>
-            <p>
-              The map uses Lime Street Station as a stand-in for the current
-              player position. That keeps the tactical page testable before GPS
-              or game-state-driven centering exists.
-            </p>
-          </div>
-
-          <div class="card">
-            <p class="panel-kicker">Interaction Rules</p>
-            <h2>Prototype Constraints</h2>
-            <p>
-              Panning is disabled to keep the player marker fixed at the center
-              of the encounter space. Rotation stays available so facing and
-              local orientation can still be tested.
-            </p>
-          </div>
-        </aside>
-      </main>
+      </div>
     </div>
 
     <script src="https://unpkg.com/maplibre-gl@5.4.0/dist/maplibre-gl.js"></script>

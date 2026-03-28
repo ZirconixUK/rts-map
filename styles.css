@@ -337,29 +337,29 @@ body {
   cursor: pointer;
 }
 
-.tactical-page .page-shell {
-  padding-bottom: 2rem;
-}
-
-.tactical-map-shell {
-  position: relative;
-  min-height: 26rem;
-  border-radius: 1rem;
+.tactical-page {
+  min-height: 100vh;
   overflow: hidden;
-  border: 1px solid rgba(27, 59, 36, 0.08);
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.2), transparent),
-    linear-gradient(135deg, #dae5d0, #bacbb7);
+  background: #dbe6cf;
 }
 
-.tactical-map-stage {
-  position: absolute;
+.tactical-map-fullscreen {
+  position: fixed;
   inset: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #dbe6cf;
+  cursor: grab;
+  touch-action: none;
 }
 
-.tactical-map-stage .maplibregl-map,
-.tactical-map-stage .maplibregl-canvas,
-.tactical-map-stage .maplibregl-canvas-container {
+.tactical-map-fullscreen.is-rotating {
+  cursor: grabbing;
+}
+
+.tactical-map-fullscreen .maplibregl-map,
+.tactical-map-fullscreen .maplibregl-canvas,
+.tactical-map-fullscreen .maplibregl-canvas-container {
   width: 100%;
   height: 100%;
 }
@@ -383,56 +383,6 @@ body {
   pointer-events: none;
 }
 
-.tactical-overlay {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  min-height: 26rem;
-  padding: 1rem;
-  pointer-events: none;
-}
-
-.tactical-chip-stack,
-.tactical-toolbar,
-.map-caption {
-  pointer-events: auto;
-}
-
-.tactical-chip-stack {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-
-.tactical-chip {
-  display: inline-flex;
-  align-items: center;
-  padding: 0.45rem 0.7rem;
-  border-radius: 999px;
-  background: rgba(250, 247, 240, 0.9);
-  border: 1px solid rgba(24, 49, 31, 0.12);
-  color: var(--text);
-  font-size: 0.85rem;
-  font-weight: 700;
-}
-
-.tactical-toolbar {
-  align-self: center;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.75rem;
-  margin-top: auto;
-  margin-bottom: 1rem;
-}
-
-.tactical-toolbar .action-button {
-  background: rgba(18, 28, 22, 0.84);
-  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.2);
-}
-
 .tactical-player-marker {
   width: 1.2rem;
   height: 1.2rem;
@@ -440,10 +390,6 @@ body {
   border-radius: 50%;
   background: var(--player);
   box-shadow: 0 0 0 0.35rem rgba(31, 90, 136, 0.18);
-}
-
-.tactical-page .map-caption {
-  margin: 0;
 }
 
 .strategy-page {
@@ -519,8 +465,4 @@ body {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .tactical-map-shell,
-  .tactical-overlay {
-    min-height: 34rem;
-  }
 }

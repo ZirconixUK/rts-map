@@ -4,9 +4,6 @@ const limeStreetStation = {
 };
 
 const tacticalMapElement = document.querySelector("#tactical-map");
-const rotateLeftButton = document.querySelector("#rotate-left");
-const rotateRightButton = document.querySelector("#rotate-right");
-const resetBearingButton = document.querySelector("#reset-bearing");
 
 const tacticalStyle = {
   version: 8,
@@ -36,10 +33,55 @@ function buildPlayerMarker() {
   return marker;
 }
 
-function stepBearing(map, delta) {
-  map.rotateTo(map.getBearing() + delta, {
-    duration: 220,
+function bindDragRotation(map, surface) {
+  const rotationState = {
+    pointerId: null,
+    clientX: 0,
+    bearing: 0,
+  };
+
+  const endRotation = () => {
+    rotationState.pointerId = null;
+    surface.classList.remove("is-rotating");
+  };
+
+  surface.addEventListener("pointerdown", (event) => {
+    if (!event.isPrimary) {
+      return;
+    }
+
+    rotationState.pointerId = event.pointerId;
+    rotationState.clientX = event.clientX;
+    rotationState.bearing = map.getBearing();
+    surface.classList.add("is-rotating");
+    surface.setPointerCapture(event.pointerId);
+    event.preventDefault();
   });
+
+  surface.addEventListener("pointermove", (event) => {
+    if (rotationState.pointerId !== event.pointerId) {
+      return;
+    }
+
+    const deltaX = event.clientX - rotationState.clientX;
+    map.jumpTo({
+      center: [limeStreetStation.lng, limeStreetStation.lat],
+      bearing: rotationState.bearing + deltaX * 0.35,
+    });
+    event.preventDefault();
+  });
+
+  surface.addEventListener("pointerup", (event) => {
+    if (rotationState.pointerId !== event.pointerId) {
+      return;
+    }
+
+    surface.releasePointerCapture(event.pointerId);
+    endRotation();
+  });
+
+  surface.addEventListener("pointercancel", endRotation);
+  surface.addEventListener("lostpointercapture", endRotation);
 }
 
 function bootTacticalMap() {
@@ -64,25 +106,18 @@ function bootTacticalMap() {
     doubleClickZoom: false,
     touchPitch: false,
     keyboard: false,
+    pitchWithRotate: false,
     cooperativeGestures: false,
   });
 
+  map.dragRotate.disable();
   map.touchZoomRotate.disable();
-  map.touchZoomRotate.enableRotation();
 
   map.addControl(
     new window.maplibregl.AttributionControl({
       compact: true,
     }),
     "bottom-right",
-  );
-
-  map.addControl(
-    new window.maplibregl.NavigationControl({
-      showZoom: false,
-      visualizePitch: false,
-    }),
-    "top-right",
   );
 
   map.on("load", () => {
@@ -119,11 +154,7 @@ function bootTacticalMap() {
     });
   });
 
-  rotateLeftButton?.addEventListener("click", () => stepBearing(map, -20));
-  rotateRightButton?.addEventListener("click", () => stepBearing(map, 20));
-  resetBearingButton?.addEventListener("click", () => {
-    map.rotateTo(0, { duration: 250 });
-  });
+  bindDragRotation(map, tacticalMapElement);
 }
 
 window.addEventListener("load", bootTacticalMap);
