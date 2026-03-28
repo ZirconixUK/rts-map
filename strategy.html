@@ -47,8 +47,6 @@
 
       .map-fab {
         position: fixed;
-        right: 1rem;
-        bottom: 1rem;
         z-index: 1000;
         border: 0;
         border-radius: 999px;
@@ -60,6 +58,17 @@
         box-shadow: 0 18px 42px rgba(0, 0, 0, 0.24);
         backdrop-filter: blur(10px);
         cursor: pointer;
+        text-decoration: none;
+      }
+
+      .map-fab-primary {
+        right: 1rem;
+        bottom: 1rem;
+      }
+
+      .map-fab-secondary {
+        left: 1rem;
+        top: 1rem;
       }
     </style>
     <link
@@ -80,7 +89,11 @@
       <div id="strategy-map" class="strategy-map-full" aria-label="Strategy map"></div>
     </div>
 
-    <button class="map-fab" id="recenter-button" type="button" aria-label="Recenter map">
+    <a class="map-fab map-fab-secondary" href="tactical.html?v=20260328f" aria-label="Open tactical map">
+      Tactical
+    </a>
+
+    <button class="map-fab map-fab-primary" id="recenter-button" type="button" aria-label="Recenter map">
       Recenter
     </button>
 
@@ -89,7 +102,7 @@
       integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
       crossorigin=""
     ></script>
-    <script src="poi-runtime.js?v=20260328e"></script>
-    <script src="strategy.js?v=20260328e"></script>
+    <script src="poi-runtime.js?v=20260328f"></script>
+    <script src="strategy.js?v=20260328f"></script>
   </body>
 </html>

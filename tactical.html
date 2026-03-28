@@ -13,6 +13,25 @@
       href="https://unpkg.com/maplibre-gl@5.4.0/dist/maplibre-gl.css"
     />
     <link rel="stylesheet" href="styles.css?v=20260328c" />
+    <style>
+      .map-mode-link {
+        position: fixed;
+        left: 1rem;
+        top: 1rem;
+        z-index: 1000;
+        display: inline-flex;
+        align-items: center;
+        border-radius: 999px;
+        padding: 0.9rem 1.1rem;
+        background: rgba(18, 28, 22, 0.82);
+        color: #fff9f0;
+        font: inherit;
+        font-weight: 700;
+        text-decoration: none;
+        box-shadow: 0 18px 42px rgba(0, 0, 0, 0.24);
+        backdrop-filter: blur(10px);
+      }
+    </style>
   </head>
   <body class="tactical-page">
     <div class="tactical-map-shell" aria-label="Tactical map centered on Lime Street Station">
@@ -44,8 +63,12 @@
       </div>
     </div>
 
+    <a class="map-mode-link" href="strategy.html?v=20260328f" aria-label="Open strategy map">
+      Strategy
+    </a>
+
     <script src="https://unpkg.com/maplibre-gl@5.4.0/dist/maplibre-gl.js"></script>
-    <script src="poi-runtime.js?v=20260328d"></script>
-    <script src="tactical.js?v=20260328d"></script>
+    <script src="poi-runtime.js?v=20260328f"></script>
+    <script src="tactical.js?v=20260328f"></script>
   </body>
 </html>
