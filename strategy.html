@@ -17,7 +17,15 @@
     />
   </head>
   <body class="strategy-page">
-    <div id="strategy-map" class="strategy-map-full" aria-label="Strategy map"></div>
+    <div class="strategy-map-shell" aria-label="Strategy map">
+      <iframe
+        id="strategy-map-fallback"
+        class="strategy-map-fallback"
+        title="Strategy map fallback"
+        src="https://www.openstreetmap.org/export/embed.html?bbox=-2.987%2C53.4025%2C-2.967%2C53.4135&amp;layer=mapnik&amp;marker=53.407822%2C-2.977385"
+      ></iframe>
+      <div id="strategy-map" class="strategy-map-full" aria-label="Strategy map"></div>
+    </div>
 
     <header class="strategy-overlay strategy-overlay-top">
       <div class="strategy-title">
@@ -62,6 +70,10 @@
             <div>
               <dt>Mode</dt>
               <dd>Strategy</dd>
+            </div>
+            <div>
+              <dt>Engine</dt>
+              <dd id="map-engine-readout">Fallback</dd>
             </div>
           </dl>
         </section>
